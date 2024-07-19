@@ -4,19 +4,28 @@ require_relative "lib/data-analysis.rb"
 require_relative "lib/json-tools.rb"
 
 begin
-  results = [
-    "test/ci_mode_off/result_llama3_01.json",
-    "test/ci_mode_off/result_llama3_01.json",
-    "test/ci_mode_off/result_llama3_02.json",
-    "test/ci_mode_off/result_llama3_03.json",
-    "test/ci_mode_off/result_llama3_04.json",
+  llms = [
+    "tinyllama:latest",
+    "phi3:3.8b",
+    "llama2:latest",
+    "llama3:latest",
+    "gemma2:latest",
   ]
 
-  data = []
-  results.each do |result|
-    hash = JsonTools.json_to_hash result
-    data.push(hash.map { |h| h["score"] })
+  llms.each do |llm|
+    puts "##### #{llm}"
+
+    results = 30.times.map { |i| format("test/llms/result_#{llm}_%02d.json", i) }
+
+    data = []
+    results.each do |result|
+      hash = JsonTools.json_to_hash result
+      data.push(hash.map { |h| h["score"] })
+    end
+
+    DataAnalysis.hash_to_statistic data
   end
 
-  DataAnalysis.hash_to_table data
+  #   results = 30.times.map { |i| format("test/llms/result_gemma2:latest_%02d.json", i) }
+  #   puts results
 end

@@ -23,4 +23,19 @@ class DataAnalysis
       end
     end
   end
+
+  def self.hash_to_statistic(data)
+    parameters = data.first.first.keys
+    # parameters = ["context_relevancy", "answer_correctness"]
+    parameters.each do |parameter|
+      puts "\n###### #{parameter}\n\n"
+      puts "| Idx | Mean | Standard Deviation |"
+      puts "| --- | ---- | ------------------ |"
+      row_len = data.first.length
+      row_len.times do |i|
+        calc = CalcDist.new data.map { |d| d[i][parameter] }
+        puts "| #{i} | #{calc.median} | #{calc.sd} |"
+      end
+    end
+  end
 end
