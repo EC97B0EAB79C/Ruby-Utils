@@ -22,7 +22,7 @@ class JsonTools
 
   def self.json_to_csv(json_file_name, csv_file_name, expand_key = [], remove_key = [])
     json_file = File.read json_file_name
-    json_file.gsub!(" NaN,", ' "NaN,"')
+    json_file.gsub!(" NaN,", ' "NaN",')
     json_hash = JSON.parse json_file
 
     CSV.open(csv_file_name, "w") do |csv|
